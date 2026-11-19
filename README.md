@@ -30,7 +30,7 @@ Aplikasi e-learning sederhana: Admin mengelola course dan lesson berupa video, S
 
 ## Instalasi
 
-    git clone <URL-REPOSITORY> elearning-platform
+    git clone https://github.com/Nadia121621/elearning-platform.git elearning-platform
     cd elearning-platform
 
     composer install
@@ -96,5 +96,6 @@ Lihat [docs/DESIGN.md](docs/DESIGN.md) untuk system design, ERD, sequence diagra
     php artisan test
 
 Tes memakai SQLite in-memory (butuh ekstensi `pdo_sqlite`), sehingga tidak menyentuh database MySQL. `tests/Feature/RoleAccessTest.php` memverifikasi pembatasan akses per role, course draft yang tidak terlihat student, otorisasi pemutaran video, validasi upload, dan registrasi publik yang hanya menghasilkan Student.
+
 
 
