@@ -90,3 +90,9 @@ Seeder juga membuat 3 course dummy (2 published, 1 draft) beserta lesson-nya. Vi
 ## Dokumentasi desain
 
 Lihat [docs/DESIGN.md](docs/DESIGN.md) untuk system design, ERD, sequence diagram, asumsi, dan daftar keterbatasan.
+
+## Pengujian
+
+    php artisan test
+
+Tes memakai SQLite in-memory (butuh ekstensi `pdo_sqlite`), sehingga tidak menyentuh database MySQL. `tests/Feature/RoleAccessTest.php` memverifikasi pembatasan akses per role, course draft yang tidak terlihat student, otorisasi pemutaran video, validasi upload, dan registrasi publik yang hanya menghasilkan Student.

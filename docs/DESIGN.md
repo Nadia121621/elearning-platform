@@ -109,4 +109,5 @@ sequenceDiagram
 - Status `uploading` tidak dibersihkan otomatis bila proses PHP berhenti di tengah upload; admin perlu mengunggah ulang.
 - Belum ada pelacakan progres belajar student, pendaftaran ke course, atau pencarian.
 - Pengurutan lesson memakai tombol naik/turun, belum drag-and-drop.
-- Pengujian otomatis masih minim (lihat bagian pengujian jika ditambahkan).
+- Pengujian otomatis berfokus pada otorisasi dan upload (tests/Feature/RoleAccessTest.php); belum ada tes untuk CRUD lesson dan pengurutan.
+
