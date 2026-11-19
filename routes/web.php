@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\CourseController;
-use App\Http\Controllers\Admin\LessonController;
+use App\Http\Controllers\Admin\CourseController as AdminCourseController;
+use App\Http\Controllers\Admin\LessonController as AdminLessonController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Student\CourseController as StudentCourseController;
+use App\Http\Controllers\Student\LessonController as StudentLessonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,9 +12,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return auth()->user()->isAdmin()
-        ? redirect()->route('admin.courses.index')
-        : view('dashboard');
+    return redirect()->route(
+        auth()->user()->isAdmin() ? 'admin.courses.index' : 'student.courses.index'
+    );
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -22,15 +24,23 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::resource('courses', CourseController::class);
+    Route::resource('courses', AdminCourseController::class);
 
-    Route::resource('courses.lessons', LessonController::class)
+    Route::resource('courses.lessons', AdminLessonController::class)
         ->except(['index', 'show'])
         ->scoped();
 
-    Route::post('courses/{course}/lessons/{lesson}/move', [LessonController::class, 'move'])
+    Route::post('courses/{course}/lessons/{lesson}/move', [AdminLessonController::class, 'move'])
         ->scopeBindings()
         ->name('courses.lessons.move');
+});
+
+Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
+    Route::get('/courses', [StudentCourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/{course}', [StudentCourseController::class, 'show'])->name('courses.show');
+    Route::get('/courses/{course}/lessons/{lesson}', [StudentLessonController::class, 'show'])
+        ->scopeBindings()
+        ->name('lessons.show');
 });
 
 require __DIR__ . '/auth.php';
