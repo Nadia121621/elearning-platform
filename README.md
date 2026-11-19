@@ -43,7 +43,7 @@ Di Windows PowerShell, ganti `cp .env.example .env` dengan `Copy-Item .env.examp
 
 ## Konfigurasi
 
-Buat database kosong, misalnya `elearning_platform`, lalu isi `.env`:
+Buat database kosong, misalnya `elearning_platform`. File `.env.example` bawaan Laravel memakai SQLite, jadi ubah pengaturan database di `.env` menjadi MySQL seperti berikut:
 
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -96,3 +96,5 @@ Lihat [docs/DESIGN.md](docs/DESIGN.md) untuk system design, ERD, sequence diagra
     php artisan test
 
 Tes memakai SQLite in-memory (butuh ekstensi `pdo_sqlite`), sehingga tidak menyentuh database MySQL. `tests/Feature/RoleAccessTest.php` memverifikasi pembatasan akses per role, course draft yang tidak terlihat student, otorisasi pemutaran video, validasi upload, dan registrasi publik yang hanya menghasilkan Student.
+
+
