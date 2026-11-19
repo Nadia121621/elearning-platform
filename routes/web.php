@@ -10,7 +10,9 @@ use App\Http\Controllers\Student\LessonController as StudentLessonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $courses = \App\Models\Course::published()->withCount('lessons')->latest()->take(3)->get();
+
+    return view('welcome', compact('courses'));
 });
 
 Route::get('/dashboard', function () {
@@ -60,3 +62,4 @@ Route::get('/courses/{course}/lessons/{lesson}/video', LessonVideoStreamControll
     ->name('lessons.video');
 
 require __DIR__ . '/auth.php';
+
