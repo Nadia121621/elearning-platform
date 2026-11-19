@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Lesson extends Model
 {
@@ -26,12 +27,25 @@ class Lesson extends Model
         return $this->video_status === self::STATUS_READY && $this->video_path !== null;
     }
 
+    public function deleteVideoFile(): void
+    {
+        if ($this->video_path) {
+            Storage::disk('local')->delete($this->video_path);
+        }
+    }
+
     protected static function booted(): void
     {
+        // Lesson baru otomatis ditaruh di urutan terakhir
         static::creating(function (Lesson $lesson) {
             if (! $lesson->position) {
                 $lesson->position = (int) static::where('course_id', $lesson->course_id)->max('position') + 1;
             }
+        });
+
+        // Hapus file video dari storage saat lesson dihapus
+        static::deleting(function (Lesson $lesson) {
+            $lesson->deleteVideoFile();
         });
     }
 }

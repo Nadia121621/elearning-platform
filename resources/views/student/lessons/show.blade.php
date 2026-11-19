@@ -10,13 +10,21 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 grid gap-6 lg:grid-cols-3">
             <div class="lg:col-span-2">
                 <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <div class="flex aspect-video items-center justify-center rounded-md bg-gray-100 text-sm text-gray-500">
-                        @if ($lesson->hasPlayableVideo())
-                            Pemutar video akan ditampilkan di sini.
-                        @else
-                            Video untuk lesson ini belum tersedia.
-                        @endif
-                    </div>
+                    @if ($lesson->hasPlayableVideo())
+                        <video controls controlsList="nodownload" preload="metadata"
+                            class="aspect-video w-full rounded-md bg-black"
+                            src="{{ route('lessons.video', [$course, $lesson]) }}"></video>
+                    @else
+                        <div class="flex aspect-video items-center justify-center rounded-md bg-gray-100 px-4 text-center text-sm text-gray-500">
+                            @if ($lesson->video_status === 'uploading')
+                                Video sedang diproses. Silakan kembali beberapa saat lagi.
+                            @elseif ($lesson->video_status === 'failed')
+                                Video untuk lesson ini gagal diunggah. Hubungi admin.
+                            @else
+                                Video untuk lesson ini belum tersedia.
+                            @endif
+                        </div>
+                    @endif
 
                     @if ($lesson->description)
                         <p class="mt-4 text-gray-600">{{ $lesson->description }}</p>

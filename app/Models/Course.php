@@ -26,4 +26,12 @@ class Course extends Model
     {
         return $query->where('is_published', true);
     }
+
+    protected static function booted(): void
+    {
+        // Hapus lesson satu per satu agar file videonya ikut terhapus
+        static::deleting(function (Course $course) {
+            $course->lessons()->get()->each->delete();
+        });
+    }
 }

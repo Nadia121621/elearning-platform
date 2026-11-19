@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\CourseController as AdminCourseController;
 use App\Http\Controllers\Admin\LessonController as AdminLessonController;
+use App\Http\Controllers\Admin\LessonVideoController as AdminLessonVideoController;
+use App\Http\Controllers\LessonVideoStreamController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\CourseController as StudentCourseController;
 use App\Http\Controllers\Student\LessonController as StudentLessonController;
@@ -33,6 +35,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('courses/{course}/lessons/{lesson}/move', [AdminLessonController::class, 'move'])
         ->scopeBindings()
         ->name('courses.lessons.move');
+
+    Route::post('courses/{course}/lessons/{lesson}/video', [AdminLessonVideoController::class, 'store'])
+        ->scopeBindings()
+        ->name('courses.lessons.video.store');
+
+    Route::delete('courses/{course}/lessons/{lesson}/video', [AdminLessonVideoController::class, 'destroy'])
+        ->scopeBindings()
+        ->name('courses.lessons.video.destroy');
 });
 
 Route::middleware(['auth', 'role:student'])->name('student.')->group(function () {
@@ -42,5 +52,11 @@ Route::middleware(['auth', 'role:student'])->name('student.')->group(function ()
         ->scopeBindings()
         ->name('lessons.show');
 });
+
+// Pemutaran video: admin (preview) dan student, dicek di controller
+Route::get('/courses/{course}/lessons/{lesson}/video', LessonVideoStreamController::class)
+    ->middleware(['auth', 'role:admin,student'])
+    ->scopeBindings()
+    ->name('lessons.video');
 
 require __DIR__ . '/auth.php';
