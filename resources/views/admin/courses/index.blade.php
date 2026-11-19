@@ -29,7 +29,7 @@
                         @forelse ($courses as $course)
                             <tr>
                                 <td class="px-6 py-4">
-                                    <div class="font-medium text-gray-900">{{ $course->title }}</div>
+                                    <a href="{{ route('admin.courses.show', $course) }}" class="font-medium text-indigo-600 hover:underline">{{ $course->title }}</a>
                                     <div class="text-gray-500">{{ \Illuminate\Support\Str::limit($course->description, 80) }}</div>
                                 </td>
                                 <td class="px-6 py-4">
@@ -63,3 +63,4 @@
         </div>
     </div>
 </x-app-layout>
+

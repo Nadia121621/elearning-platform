@@ -17,6 +17,12 @@ class CourseController extends Controller
         return view('admin.courses.index', compact('courses'));
     }
 
+    public function show(Course $course): View
+    {
+        $course->load('lessons');
+
+        return view('admin.courses.show', compact('course'));
+    }
     public function create(): View
     {
         return view('admin.courses.create');
@@ -63,3 +69,4 @@ class CourseController extends Controller
         ]);
     }
 }
+
